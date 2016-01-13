@@ -38,4 +38,4 @@ RUN echo %sudo ALL=NOPASSWD: ALL >> /etc/sudoers
 USER node
 WORKDIR /home/node
 ENV HOME /home/node
-RUN npm install -g nightmare
+RUN sudo npm install -g nightmare
