@@ -35,7 +35,7 @@ RUN apt-get update && \
 RUN useradd -ms /bin/bash node -G sudo
 RUN chown -R node:node /home/node
 RUN echo %sudo ALL=NOPASSWD: ALL >> /etc/sudoers
-RUN npm install -g nightmare
+USER node
 WORKDIR /home/node
 ENV HOME /home/node
-USER node
+RUN npm install -g nightmare
