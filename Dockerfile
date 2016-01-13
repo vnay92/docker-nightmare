@@ -35,7 +35,10 @@ RUN apt-get update && \
 RUN useradd -ms /bin/bash node -G sudo
 RUN chown -R node:node /home/node
 RUN echo %sudo ALL=NOPASSWD: ALL >> /etc/sudoers
+
 USER node
 WORKDIR /home/node
 ENV HOME /home/node
-RUN sudo npm install -g nightmare
+
+COPY docker-entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
