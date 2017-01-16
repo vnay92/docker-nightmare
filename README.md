@@ -29,3 +29,4 @@ docker run myscraper:latest --rm index.js
 - Node is latest from docker hub, so probably 7.2+ at time of writing
 - Your script is executed with Xvfb running in the background on display `:99.0` at `1280x2000x24`
 - `node` is executed with `--harmony-async-await` flag.
+- Most of this is based on help from https://github.com/segmentio/nightmare/issues/224
