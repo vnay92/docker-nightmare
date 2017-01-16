@@ -31,16 +31,22 @@ RUN apt-get install -y \
 
 ENV DEBUG="nightmare"
 
+RUN npm install -g yarn
+RUN npm install nightmare
 
 RUN mkdir -p /workspace
 WORKDIR /workspace
 RUN mkdir ./tmp
 
 ADD package.json .
+ADD yarn.lock .
 
-RUN npm install
+RUN yarn install
 
 ADD . .
 
-ENTRYPOINT ["xvfb-run", '--server-args="-screen 0 1024x768x24"', 'node', '--harmony-async-await']
+COPY entrypoint.sh /entrypoint
+RUN chmod +x /entrypoint
+ENTRYPOINT ["/entrypoint", "node", "--harmony-async-await"]
+
 CMD ["index.js"]
