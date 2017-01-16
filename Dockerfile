@@ -1,14 +1,12 @@
 FROM node:latest
-MAINTAINER unite.flights <docker@unite.flights>
+MAINTAINER Ivan Vanderbyl <ivan@flood.io>
 
-# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
-RUN groupadd --system nightmare && useradd --system --create-home --gid nightmare nightmare
-ENV HOME "/home/nightmare"
+# Based on instructions at https://github.com/segmentio/nightmare/issues/224
 
-ENV DEBUG=nightmare
-ENV ARGUMENTS=()
+RUN apt-get update
 
-RUN apt-get update && apt-get install -y \
+# Installing the packages needed to run Nightmare
+RUN apt-get install -y \
   xvfb \
   x11-xkb-utils \
   xfonts-100dpi \
@@ -29,18 +27,20 @@ RUN apt-get update && apt-get install -y \
   libxss1 \
   libnss3-dev \
   gcc-multilib \
-  g++-multilib && \
-    rm -rf /var/lib/apt/lists/* && \
-		find /usr/share/doc -depth -type f ! -name copyright | xargs rm || true && \
-		find /usr/share/doc -empty | xargs rmdir || true && \
-		rm -rf /usr/share/man/* /usr/share/groff/* /usr/share/info/* && \
-		rm -rf /usr/share/lintian/* /usr/share/linda/* /var/cache/man/*
+  g++-multilib
 
-WORKDIR ${HOME}
-COPY ./package.json ./
+ENV DEBUG="nightmare"
+
+
+RUN mkdir -p /workspace
+WORKDIR /workspace
+RUN mkdir ./tmp
+
+ADD package.json .
+
 RUN npm install
 
-VOLUME ${HOME}
+ADD . .
 
-COPY docker-entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["xvfb-run", '--server-args="-screen 0 1024x768x24"', 'node', '--harmony-async-await']
+CMD ["index.js"]
