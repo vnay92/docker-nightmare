@@ -1,5 +1,4 @@
-# FROM ivanvanderbyl/docker-nightmare:latest
-FROM docker-nightmare:latest
+FROM quay.io/ivanvanderbyl/docker-nightmare:latest
 MAINTAINER "Ivan Vanderbyl <ivan@flood.io>"
 
 ADD . /workspace
