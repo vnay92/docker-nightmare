@@ -7,9 +7,12 @@ A `node:latest` compiled with `nightmare` support running in `xvfb`.
 In your project, use this image:
 
 ```
-FROM ivanvanderbyl/docker-nightmare:latest
+FROM quay.io/ivanvanderbyl/docker-nightmare:latest
 
 ADD . /workspace
+RUN yarn install # if you have package.json and/or yarn.lock
+
+CMD "index.js"
 ```
 
 Then build the image:
@@ -18,11 +21,13 @@ Then build the image:
 docker build -t myscraper .
 ```
 
-Run your nightmare script (assuming it was called index.js):
+Run your nightmare script (assuming it was called `index.js`):
 
 ```shell
 docker run myscraper:latest --rm index.js
 ```
+
+See a working example for [DuckDuckGo](https://github.com/ivanvanderbyl/docker-nightmare/tree/master/examples/duckduckgo)
 
 ### Technical details
 
