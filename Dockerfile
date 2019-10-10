@@ -1,5 +1,4 @@
-FROM node:latest
-MAINTAINER Ivan Vanderbyl <ivan@flood.io>
+FROM node:8-stretch
 
 # Based on instructions at https://github.com/segmentio/nightmare/issues/224
 
@@ -31,7 +30,6 @@ RUN apt-get install -y \
 
 ENV DEBUG="nightmare"
 
-RUN npm install -g yarn
 RUN npm install nightmare
 
 RUN mkdir -p /workspace
@@ -39,14 +37,12 @@ WORKDIR /workspace
 RUN mkdir ./tmp
 
 ADD package.json .
-ADD yarn.lock .
-
-RUN yarn install
 
 ADD . .
 
 COPY entrypoint.sh /entrypoint
 RUN chmod +x /entrypoint
-ENTRYPOINT ["/entrypoint", "node", "--harmony-async-await"]
+
+ENTRYPOINT ["/entrypoint"]
 
 CMD ["index.js"]

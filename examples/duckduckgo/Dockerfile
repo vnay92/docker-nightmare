@@ -1,7 +1,5 @@
-FROM quay.io/ivanvanderbyl/docker-nightmare:latest
-MAINTAINER "Ivan Vanderbyl <ivan@flood.io>"
+FROM vnay92/nightmare:latest
 
-ADD . /workspace
-RUN yarn install
+RUN npm install
 
-CMD "index.js"
+CMD ["node", "index.js"]
